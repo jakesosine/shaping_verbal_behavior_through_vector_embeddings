@@ -73,8 +73,8 @@ export default function BackgroundInfoForm() {
                             "Secondary education / High school diploma",
                             "Vocational training",
                             "Associate degree (or equivalent)",
-                            "Bachelor’s degree (or equivalent)",
-                            "Master’s degree (or equivalent)",
+                            "Bachelor's degree (or equivalent)",
+                            "Master's degree (or equivalent)",
                             "Doctorate (Ph.D., Ed.D., etc.)",
                             "Prefer Not to Say",
                         ],
@@ -90,11 +90,12 @@ export default function BackgroundInfoForm() {
                         <select
                             id={id}
                             name={id}
-
+                            value={formData[id as keyof FormData]}
+                            onChange={(e) => setFormData({ ...formData, [id]: e.target.value })}
                             required
                             className="form-select block w-full mt-1 border-2 border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
                         >
-                            <option value="" disabled selected>
+                            <option value="">
                                 -- Please Select --
                             </option>
 

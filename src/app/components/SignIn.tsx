@@ -1,6 +1,7 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, FormEvent } from "react";
 import TermsModal from "./termsModal";
+import { signIn } from "../(task)/actions/action";
 
 export default function SignIn() {
     const [email, setEmail] = useState("");
@@ -10,8 +11,36 @@ export default function SignIn() {
     const [error, setError] = useState("");
     const [signup, setSignup] = useState(false);
     const [isTermsModalOpen, setIsTermsModalOpen] = useState(false);
-
     const [signin, setSignin] = useState(true);
+
+    const handleSubmit = async (e: FormEvent) => {
+        e.preventDefault();
+
+        try {
+            const response = await fetch(`/api/${signin ? "signin" : "signup"}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(
+                    signin
+                        ? { email, password }
+                        : { email, password, alphaKey, termsAccepted }
+                ),
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            window.location.href = "/background-info";
+            console.log(data);
+        } catch (err) {
+            setError('Failed to sign in');
+            console.error(err);
+        }
+    };
 
     return (
         <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
@@ -22,7 +51,7 @@ export default function SignIn() {
                 className={`w-full max-w-md p-8 bg-white shadow-md rounded ${signup ? "mt-5" : ""
                     }`}
             >
-                <form onSubmit={e => console.log(e)} className="space-y-6">
+                <form onSubmit={handleSubmit} className="space-y-6">
                     <div>
                         <label
                             htmlFor="email"

@@ -7,15 +7,18 @@ This application is designed to collect objective descriptions of videos using v
 This web application facilitates a research study where participants:
 - Describe videos in an objective manner
 - Help define and describe behaviors shown in videos
+- The cosine similarity and dot product of the description of the embedding is compared to the description of the embedding of the video made by a human. 
+- The score is then rendered back to the user. 
+- The user gets 5 chances to increase their score. 
 - Contribute to research evaluating novel methods for quantifying language
 
 ## Participation Details
 
 - Participation is completely voluntary
 - Participants must be 18 years or older
-- Monetary compensation of $4 is provided
-- All responses remain anonymous
-- Data is securely stored on Sharepoint
+- We are using the platform [Prolific](https://www.prolific.co/) to collect data.
+- We are providing monetary compensation for participation.
+- All responses remain anonymous. Data is collected in a relational database on render, and then transfered, subsequently destroyed, and securely stored on Sharepoint. 
 
 ## Technical Stack
 

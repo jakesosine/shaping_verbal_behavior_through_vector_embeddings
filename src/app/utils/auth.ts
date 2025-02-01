@@ -1,3 +1,4 @@
+import { db } from "@/server/db";
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
@@ -17,22 +18,16 @@ export const createJWT = (user: any) => {
     return token;
 };
 
-export const protect = async (req: Request) => {
-    const bearer = req.headers.get("jwt");
-    if (!bearer) {
-        return new Response("Not authorized", { status: 401 });
-    }
+export const protect = async (jwt_string: string) => {
+    const { id, username } = jwt.verify(jwt_string, process.env.JWT_SECRET);
+    const user = await db.user.findUnique({
+        where: {
+            id: id,
+        },
+    });
 
-    const [, token] = bearer.split(" ");
-    if (!token) {
-        return new Response("Not authorized", { status: 401 });
+    if (!user) {
+        throw new Error("User not found");
     }
-
-    try {
-        const payload = jwt.verify(token, process.env.JWT_SECRET);
-        return payload;
-    } catch (e) {
-        console.error(e);
-        return new Response("Not authorized", { status: 401 });
-    }
-};
+    return user;
+}

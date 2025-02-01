@@ -1,21 +1,16 @@
-export const signIn = async (email: string, password: string) => {
-    const response = await fetch("/api/signin", {
-        method: "POST",
-        body: JSON.stringify({ email, password }),
-    });
-    const data = await response.json();
+"use server";
+import { db } from "@/server/db";
+import { protect } from "@/app/utils/auth";
+import { NextResponse, NextRequest } from "next/server";
 
-    if (response.ok) {
-        window.location.href = "/background-info";
-    }
+export const submitConsent = async (jwt: string) => {
+    const user = await protect(jwt);
+    console.log(user);
+    return user;
+}
 
-    return data;
-};
-
-export const signUp = async (email: string, password: string) => {
-    const response = await fetch("/api/signup", {
-        method: "POST",
-        body: JSON.stringify({ email, password }),
-    });
-    return response.json();
-};
+export const submitNonConsent = async (jwt: string) => {
+    const user = await protect(jwt);
+    console.log(user);
+    return user;
+}

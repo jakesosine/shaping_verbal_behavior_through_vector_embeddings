@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-
-type FormData = {
+import { backgroundInfo } from "../actions/action";
+type BackgroundFormData = {
     gender: string;
     race: string;
     agerange: string;
@@ -10,7 +10,7 @@ type FormData = {
 };
 
 export default function BackgroundInfoForm() {
-    const [formData, setFormData] = useState<FormData>({
+    const [formData, setFormData] = useState<BackgroundFormData>({
         gender: "",
         race: "",
         agerange: "",
@@ -90,7 +90,7 @@ export default function BackgroundInfoForm() {
                         <select
                             id={id}
                             name={id}
-                            value={formData[id as keyof FormData]}
+                            value={formData[id as keyof BackgroundFormData]}
                             onChange={(e) => setFormData({ ...formData, [id]: e.target.value })}
                             required
                             className="form-select block w-full mt-1 border-2 border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
@@ -111,6 +111,16 @@ export default function BackgroundInfoForm() {
                     <button
                         type="submit"
                         className="bg-indigo-600 text-white font-semibold py-2 px-4 rounded hover:bg-indigo-700"
+
+                        onClick={async () => {
+                            const jwt = sessionStorage.getItem('jwt');
+                            if (jwt) {
+                                const hasBackground = await backgroundInfo(formData, jwt);
+                                if (hasBackground) {
+                                    window.location.href = '/task-selection';
+                                }
+                            }
+                        }}
                     >
                         Submit
                     </button>

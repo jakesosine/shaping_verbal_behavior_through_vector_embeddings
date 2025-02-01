@@ -29,5 +29,5 @@ export const protect = async (jwt_string: string) => {
     if (!user) {
         throw new Error("User not found");
     }
-    return user;
+    return id;
 }

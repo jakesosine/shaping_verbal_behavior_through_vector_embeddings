@@ -27,6 +27,6 @@ This project is built with the [T3 Stack](https://create.t3.gg/), including:
 ## Contact Information
 
 For questions or concerns about the research, please contact:
-- Jacob Sosine (jsosine@endicott.edu)
+- Jacob Sosine, MA, MBA, BCBA (jsosine@endicott.edu)
 - David J. Cox, PhD, MSB, BCBA-D (dcox@endicott.edu)
 - Kylee Drugan-Eppich, MS, BCBA, LABA (kdruganeppich@mail.endicott.edu)

@@ -1,29 +1,32 @@
-# Create T3 App
+# Video Behavior Description Research Study
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+This application is designed to collect objective descriptions of videos using vector embeddings to account for complex verbal behavior. The study is conducted by Endicott College Institute for Applied Behavioral Science.
 
-## What's next? How do I make an app with this?
+## Project Overview
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+This web application facilitates a research study where participants:
+- Describe videos in an objective manner
+- Help define and describe behaviors shown in videos
+- Contribute to research evaluating novel methods for quantifying language
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+## Participation Details
 
+- Participation is completely voluntary
+- Participants must be 18 years or older
+- Monetary compensation of $4 is provided
+- All responses remain anonymous
+- Data is securely stored on Sharepoint
+
+## Technical Stack
+
+This project is built with the [T3 Stack](https://create.t3.gg/), including:
 - [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
 - [Prisma](https://prisma.io)
-- [Drizzle](https://orm.drizzle.team)
 - [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
 
-## Learn More
+## Contact Information
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
-
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
-
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
-
-## How do I deploy this?
-
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+For questions or concerns about the research, please contact:
+- Jacob Sosine (jsosine@endicott.edu)
+- David J. Cox, PhD, MSB, BCBA-D (dcox@endicott.edu)
+- Kylee Drugan-Eppich, MS, BCBA, LABA (kdruganeppich@mail.endicott.edu)

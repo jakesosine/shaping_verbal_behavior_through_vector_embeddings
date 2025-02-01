@@ -1,31 +1,27 @@
 "use client";
 import React, { useState, FormEvent } from "react";
-import TermsModal from "./termsModal";
-import { signIn } from "../(task)/actions/action";
 
 export default function SignIn() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [termsAccepted, setTermsAccepted] = useState(false);
     const [alphaKey, setAlphaKey] = useState("");
     const [error, setError] = useState("");
     const [signup, setSignup] = useState(false);
-    const [isTermsModalOpen, setIsTermsModalOpen] = useState(false);
     const [signin, setSignin] = useState(true);
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
 
         try {
-            const response = await fetch(`/api/${signin ? "signin" : "signup"}`, {
+            const response = await fetch(`/api/${!signin ? "signin" : "signup"}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(
-                    signin
+                    !signin
                         ? { email, password }
-                        : { email, password, alphaKey, termsAccepted }
+                        : { email, password, alphaKey }
                 ),
             });
 
@@ -102,30 +98,7 @@ export default function SignIn() {
                             />
                         </div>
                     )}
-                    {(signup || signin) && (
-                        <div className="flex items-center">
-                            <input
-                                id="terms"
-                                type="checkbox"
-                                checked={termsAccepted}
-                                onChange={(e) => setTermsAccepted(e.target.checked)}
-                                className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-                            />
-                            <label
-                                htmlFor="terms"
-                                className="ml-2 block text-sm text-gray-900"
-                            >
-                                I agree to the{" "}
-                                <button
-                                    type="button"
-                                    onClick={() => setIsTermsModalOpen(true)}
-                                    className="text-indigo-600 hover:text-indigo-500 underline"
-                                >
-                                    Terms and Conditions
-                                </button>
-                            </label>
-                        </div>
-                    )}
+
                     {error && <p className="text-sm text-red-500">{error}</p>}
                     <button
                         type="submit"
@@ -142,10 +115,7 @@ export default function SignIn() {
                     </button>
                 </form>
             </div>
-            <TermsModal
-                isOpen={isTermsModalOpen}
-                onRequestClose={() => setIsTermsModalOpen(false)}
-            />
+
         </div>
     );
 };

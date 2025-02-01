@@ -27,3 +27,11 @@ model BackgroundInfo {
     userId    Int
     User      User   @relation(fields: [userId], references: [id])
 }
+
+model Task {
+    id          Int    @id @default(autoincrement())
+    url         String
+    startTime   Int
+    endTime     Int
+    description String
+}

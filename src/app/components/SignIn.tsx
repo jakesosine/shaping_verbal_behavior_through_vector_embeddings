@@ -13,25 +13,26 @@ export default function SignIn() {
         e.preventDefault();
 
         try {
-            const response = await fetch(`/api/${!signin ? "signin" : "signup"}`, {
+            const response = await fetch(`/api/${signin ? "signin" : "signup"}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(
-                    !signin
+                    signin
                         ? { email, password }
                         : { email, password, alphaKey }
                 ),
             });
 
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
             const data = await response.json();
-            window.location.href = "/background-info";
-            console.log(data);
+
+            if (response.status === 200 && data.token && data.user) {
+                sessionStorage.setItem("jwt", data.token);
+                window.location.href = '/consent';
+            } else {
+                setError(data.message || 'Authentication failed');
+            }
         } catch (err) {
             setError('Failed to sign in');
             console.error(err);
@@ -108,7 +109,10 @@ export default function SignIn() {
                     </button>
                     <button
                         type="button"
-                        onClick={() => setSignup(!signup)}
+                        onClick={() => {
+                            setSignup(!signup);
+                            setSignin(!signin);
+                        }}
                         className="mt-4 w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                     >
                         {signup ? "Switch to Login" : "Switch to Sign Up"}

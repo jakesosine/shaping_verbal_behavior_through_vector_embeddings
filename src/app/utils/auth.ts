@@ -17,31 +17,22 @@ export const createJWT = (user: any) => {
     return token;
 };
 
-export const protect = (req: any, res: any, next: any) => {
-    const bearer = req.headers.authorization;
+export const protect = async (req: Request) => {
+    const bearer = req.headers.get("jwt");
     if (!bearer) {
-        res.status(401);
-        res.send("Not authorized");
-        return;
+        return new Response("Not authorized", { status: 401 });
     }
 
     const [, token] = bearer.split(" ");
     if (!token) {
-        console.log("here");
-        res.status(401);
-        res.send("Not authorized");
-        return;
+        return new Response("Not authorized", { status: 401 });
     }
 
     try {
         const payload = jwt.verify(token, process.env.JWT_SECRET);
-        req.user = payload;
-        next();
-        return;
+        return payload;
     } catch (e) {
         console.error(e);
-        res.status(401);
-        res.send("Not authorized");
-        return;
+        return new Response("Not authorized", { status: 401 });
     }
 };

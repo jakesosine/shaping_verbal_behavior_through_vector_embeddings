@@ -54,11 +54,14 @@ export default function Consent() {
 
                         <button
                             className="w-full bg-blue-600 text-white py-3 px-6 rounded-md hover:bg-blue-700 transition-colors duration-200 font-medium mb-4"
-                            onClick={() => {
+                            onClick={async () => {
                                 const jwt = sessionStorage.getItem('jwt');
-                                console.log(jwt);
                                 if (jwt) {
-                                    submitConsent(jwt);
+                                    const consent = await submitConsent(jwt);
+                                    if (consent) {
+                                        window.location.href = "/background-info";
+                                    }
+
                                 } else {
                                     console.log("No JWT found");
                                 }
@@ -69,13 +72,14 @@ export default function Consent() {
 
                         <button
                             className="w-full bg-red-600 text-white py-3 px-6 rounded-md hover:bg-red-700 transition-colors duration-200 font-medium mt-4"
-                            onClick={() => {
+                            onClick={async () => {
                                 const jwt = sessionStorage.getItem('jwt');
-                                console.log(jwt);
                                 if (jwt) {
-                                    submitNonConsent(jwt);
-                                    sessionStorage.clear();
-                                    window.location.href = "/";
+                                    const consent = await submitNonConsent(jwt);
+                                    if (!consent) {
+                                        sessionStorage.clear();
+                                        window.location.href = "/";
+                                    }
                                 } else {
                                     console.log("No JWT found");
                                 }

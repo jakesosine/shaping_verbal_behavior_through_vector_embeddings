@@ -26,6 +26,7 @@ export const backgroundInfo = async (formData: BackgroundFormData, jwt: string) 
         where: { id },
         data: { hasBackground: true }
     });
+    console.log(hasBackground);
 
     return hasBackground;
 }

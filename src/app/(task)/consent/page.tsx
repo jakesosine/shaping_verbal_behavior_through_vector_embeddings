@@ -1,7 +1,9 @@
 'use client'
 import { submitConsent, submitNonConsent } from "../actions/action";
+import { useState } from "react";
 
 export default function Consent() {
+    const [error, setError] = useState<string | null>(null);
     return (
         <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
             <div className="max-w-3xl mx-auto bg-white rounded-lg shadow-md p-8">
@@ -65,6 +67,7 @@ export default function Consent() {
                             Continuing with this application indicates that you have read the above information, that you
                             are voluntarily agreeing to participate and that you are 18 years of age or older.
                         </p>
+                        {error && <p className="text-red-500 text-center">{error}</p>}
 
                         <button
                             className="w-full bg-blue-600 text-white py-3 px-6 rounded-md hover:bg-blue-700 transition-colors duration-200 font-medium mb-4"
@@ -77,6 +80,7 @@ export default function Consent() {
                                     }
 
                                 } else {
+                                    setError("You are not logged in. Please login and try again.");
                                     console.log("No JWT found");
                                 }
                             }}
@@ -93,8 +97,10 @@ export default function Consent() {
                                     if (!consent) {
                                         sessionStorage.clear();
                                         window.location.href = "/";
+
                                     }
                                 } else {
+                                    setError("You are not logged in. Please login and try again.");
                                     console.log("No JWT found");
                                 }
                             }}

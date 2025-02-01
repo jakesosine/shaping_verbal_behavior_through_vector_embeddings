@@ -17,6 +17,8 @@ export default function BackgroundInfoForm() {
         highested: "",
     });
 
+    const [error, setError] = useState<string | null>(null);
+
     return (
         <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">
             <h2 className="text-lg font-semibold text-center text-gray-700 mb-4">
@@ -107,6 +109,7 @@ export default function BackgroundInfoForm() {
                         </select>
                     </div>
                 ))}
+                {error && <p className="text-red-500 text-center">{error}</p>}
                 <div className="text-center">
                     <button
                         type="submit"
@@ -119,6 +122,9 @@ export default function BackgroundInfoForm() {
                                 if (hasBackground) {
                                     window.location.href = '/task-selection';
                                 }
+                            } else {
+                                console.log("No JWT found");
+                                setError("You are not logged in. Please login and try again.");
                             }
                         }}
                     >

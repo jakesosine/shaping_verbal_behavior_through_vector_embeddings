@@ -56,3 +56,9 @@ export const submitNonConsent = async (jwt: string) => {
     });
     return consent;
 }
+
+export const processTextInput = async (text: string, id: number, jwt: string) => {
+    const userId = await protect(jwt);
+    console.log(userId);
+    return { userId };
+}

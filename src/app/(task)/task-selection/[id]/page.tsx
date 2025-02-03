@@ -9,5 +9,5 @@ export default async function TaskSelectionPage({ params }: { params: { id: stri
     if (!task) {
         return <div>Task not found</div>;
     }
-    return <VideoEmbed videoId={task.url} startTime={task.startTime} endTime={task.endTime} id={taskId} />;
+    return <VideoEmbed videoId={task.url} startTime={task.startTime} endTime={task.endTime} id={task.id} />;
 }

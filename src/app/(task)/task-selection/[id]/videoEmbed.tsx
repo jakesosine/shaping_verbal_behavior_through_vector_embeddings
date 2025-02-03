@@ -6,11 +6,14 @@ import { processTextInput } from "@/app/(task)/actions/action";
 
 export default function VideoEmbed({ videoId, startTime, endTime, id }: { videoId: string, startTime: number, endTime: number, id: number }) {
     const [notes, setNotes] = useState(""); // State to hold textarea input
+
     const videoUrl = `https://www.youtube.com/embed/${videoId}?start=${startTime}&end=${endTime}`;
 
     const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setNotes(e.target.value);
     };
+
+    console.log(id);
 
     const feedbackData = {
         cosineSimilarity: 0.2,
@@ -54,10 +57,23 @@ export default function VideoEmbed({ videoId, startTime, endTime, id }: { videoI
                 className="mt-4 px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 type="button"
                 onClick={async () => {
-                    console.log("Notes:", notes);
-                    const jwt = sessionStorage.getItem("jwt");
-                    if (jwt) {
+                    try {
+                        const jwt = sessionStorage.getItem("jwt");
+                        if (!jwt) {
+                            alert("Please log in to submit your answer");
+                            return;
+                        }
+
+                        if (!notes.trim()) {
+                            alert("Please enter your answer before submitting");
+                            return;
+                        }
+
                         await processTextInput(notes, id, jwt);
+                        alert("Answer submitted successfully!");
+                    } catch (error) {
+                        console.error("Error submitting answer:", error);
+                        alert("Failed to submit answer. Please try again.");
                     }
                 }}
             >

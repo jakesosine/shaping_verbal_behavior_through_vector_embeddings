@@ -62,3 +62,9 @@ export const processTextInput = async (text: string, id: number, jwt: string) =>
     console.log(userId);
     return { userId };
 }
+export const getTask = async (id: number) => {
+    const task = await db.task.findUnique({
+        where: { id: id },
+    });
+    return task;
+}

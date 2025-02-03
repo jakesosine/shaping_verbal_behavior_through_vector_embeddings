@@ -1,14 +1,13 @@
 'use server'
 import VideoEmbed from "./videoEmbed";
-import { db } from "@/server/db";
+import { getTask } from "@/app/(task)/actions/action";
 
 export default async function TaskSelectionPage({ params }: { params: { id: string } }) {
-    const test = await db.task.findUnique({
-        where: { id: parseInt(params.id) },
-    });
-    console.log(test);
-    if (!test) {
+    const taskId = parseInt(params.id);
+    const task = await getTask(taskId);
+    console.log(task);
+    if (!task) {
         return <div>Task not found</div>;
     }
-    return <VideoEmbed videoId={test.url} startTime={test.startTime} endTime={test.endTime} id={parseInt(params.id)} />;
+    return <VideoEmbed videoId={task.url} startTime={task.startTime} endTime={task.endTime} id={taskId} />;
 }

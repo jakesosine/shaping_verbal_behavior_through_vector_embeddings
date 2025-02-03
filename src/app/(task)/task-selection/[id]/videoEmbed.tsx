@@ -53,10 +53,11 @@ export default function VideoEmbed({ videoId, startTime, endTime, id }: { videoI
             <button
                 className="mt-4 px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 type="button"
-                onClick={() => {
+                onClick={async () => {
+                    console.log("Notes:", notes);
                     const jwt = sessionStorage.getItem("jwt");
                     if (jwt) {
-                        processTextInput(notes, id, jwt);
+                        await processTextInput(notes, id, jwt);
                     }
                 }}
             >

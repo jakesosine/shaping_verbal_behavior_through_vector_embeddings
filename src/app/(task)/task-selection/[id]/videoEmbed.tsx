@@ -2,18 +2,15 @@
 import React from "react";
 import { useState } from "react";
 import Feedback from "./feedback";
+import { processTextInput } from "@/app/(task)/actions/action";
 
-export default function VideoEmbed({ videoId, startTime, endTime }: { videoId: string, startTime: number, endTime: number }) {
+export default function VideoEmbed({ videoId, startTime, endTime, id }: { videoId: string, startTime: number, endTime: number, id: number }) {
     const [notes, setNotes] = useState(""); // State to hold textarea input
     const videoUrl = `https://www.youtube.com/embed/${videoId}?start=${startTime}&end=${endTime}`;
 
-    // const onSubmit = () => {
-    //     handleSubmit(videoId, startTime, endTime, notes); // Pass the data to handleSubmit
-    // };
-
-    // const handleTextareaChange = (e) => {
-    //     setNotes(e.target.value); // Update the state when typing in the textarea
-    // };
+    const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setNotes(e.target.value);
+    };
 
     const feedbackData = {
         cosineSimilarity: 0.2,
@@ -51,14 +48,19 @@ export default function VideoEmbed({ videoId, startTime, endTime }: { videoId: s
                 className="mt-4 w-full min-h-[200px] max-h-[400px] max-w-sm md:max-w-lg lg:max-w-xl p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500"
                 placeholder="Enter the operational definition here"
                 value={notes} // Set the value to the notes state
-            // onChange={handleTextareaChange} // Update state on change
+                onChange={handleTextareaChange} // Update state on change
             ></textarea>
             <button
                 className="mt-4 px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 type="button"
-            // onClick={onSubmit}
+                onClick={() => {
+                    const jwt = sessionStorage.getItem("jwt");
+                    if (jwt) {
+                        processTextInput(notes, id, jwt);
+                    }
+                }}
             >
-                Save
+                Submit Answer
             </button>
         </div>
     );

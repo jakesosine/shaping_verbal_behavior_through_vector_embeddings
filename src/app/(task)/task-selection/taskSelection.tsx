@@ -31,7 +31,7 @@ export default function TaskSelection({ data }: { data: TaskSelectionProps }) {
                     {data.map((item, index) => (
                         <li key={index} className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow">
                             <Link
-                                href={`/task/${item.id}`}
+                                href={`/task-selection/${item.id}`}
                                 className="block p-6"
                             >
                                 <div className="flex justify-between items-center">

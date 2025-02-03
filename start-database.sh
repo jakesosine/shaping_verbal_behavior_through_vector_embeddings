@@ -57,4 +57,4 @@ docker run -d \
   -e POSTGRES_PASSWORD="$DB_PASSWORD" \
   -e POSTGRES_DB=shaping_verbal_behavior \
   -p "$DB_PORT":5432 \
-  docker.io/postgres && echo "Database container '$DB_CONTAINER_NAME' was successfully created"
+  pgvector/pgvector:pg17 && echo "Database container '$DB_CONTAINER_NAME' was successfully created"

@@ -1,6 +1,7 @@
 "use server";
 import { db } from "@/server/db";
 import { protect } from "@/app/utils/auth";
+import { OpenAI } from "openai";
 
 type BackgroundFormData = {
     gender: string;
@@ -22,13 +23,12 @@ export const backgroundInfo = async (formData: BackgroundFormData, jwt: string) 
         },
     });
 
-    const { hasBackground } = await db.user.update({
+    const user = await db.user.update({
         where: { id },
         data: { hasBackground: true }
     });
-    console.log(hasBackground);
-
-    return hasBackground;
+    console.log(user);
+    return user;
 }
 
 export const submitConsent = async (jwt: string) => {
@@ -59,10 +59,21 @@ export const submitNonConsent = async (jwt: string) => {
 
 export const processTextInput = async (text: string, id: number, jwt: string) => {
     const userId = await protect(jwt);
-    console.log(text);
-    console.log(id);
-    console.log(userId);
-    return { userId };
+    const openai = new OpenAI({
+        apiKey: process.env.OPENAI_API_KEY,
+    });
+    const response = await openai.embeddings.create({
+        model: "text-embedding-3-small",
+        input: text,
+    });
+    const embedding = response.data[0]?.embedding;
+
+    const task = await db.task.findUnique({
+        where: { id: id },
+    });
+    console.log(task);
+
+    return { userId, embedding };
 }
 export const getTask = async (id: number) => {
     const task = await db.task.findUnique({

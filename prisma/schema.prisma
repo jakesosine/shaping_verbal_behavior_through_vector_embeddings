@@ -30,12 +30,14 @@ model BackgroundInfo {
 }
 
 model Task {
-    id           Int            @id @default(autoincrement())
-    url          String
-    startTime    Int
-    endTime      Int
-    description  String
-    TaskResponse TaskResponse[]
+    id                Int                    @id @default(autoincrement())
+    url               String
+    startTime         Int
+    endTime           Int
+    description       String
+    expertDescription String                 @default("")
+    embedding         Unsupported("vector")?
+    TaskResponse      TaskResponse[]
 }
 
 model TaskResponse {

@@ -5,7 +5,7 @@ import Feedback from "./feedback";
 import { processTextInput } from "@/app/(task)/actions/action";
 
 export default function VideoEmbed({ videoId, startTime, endTime, id }: { videoId: string, startTime: number, endTime: number, id: number }) {
-    const [notes, setNotes] = useState(""); // State to hold textarea input
+    const [notes, setNotes] = useState("This video is about a person who is trying to solve a problem and they are using a tool to do so"); // State to hold textarea input
     const [showFeedback, setShowFeedback] = useState(true);
     const [feedback, setFeedback] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -16,14 +16,9 @@ export default function VideoEmbed({ videoId, startTime, endTime, id }: { videoI
         setNotes(e.target.value);
     };
 
-    console.log(id);
 
     const feedbackData = {
         cosineSimilarity: 0.2,
-        dotProduct: 0.6,
-        clear: true,
-        objective: true,
-        complete: "Partial",
     };
 
     return (
@@ -42,24 +37,22 @@ export default function VideoEmbed({ videoId, startTime, endTime, id }: { videoI
             </div>
 
             {showFeedback && feedbackData && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                    <div className="bg-white p-6 rounded-lg shadow-xl max-w-sm w-full">
-                        <div className="flex justify-between items-center mb-4">
-                            <h3 className="text-lg font-semibold">Feedback</h3>
+                <div className="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm flex items-center justify-center z-50 transition-opacity duration-300">
+                    <div className="bg-white p-8 rounded-2xl shadow-2xl max-w-xl w-full transform transition-all duration-300 scale-95 hover:scale-100">
+                        <div className="flex justify-end items-end mb-4">
                             <button
                                 onClick={() => setShowFeedback(false)}
-                                className="text-gray-500 hover:text-gray-700"
+                                className="text-gray-400 hover:text-gray-600 transition-colors duration-200 rounded-full h-8 w-8 flex items-center justify-center hover:bg-gray-100"
                             >
                                 ✕
                             </button>
                         </div>
-                        <Feedback
-                            cosineSimilarity={feedbackData.cosineSimilarity}
-                            dotProduct={feedbackData.dotProduct}
-                            clear={feedbackData.clear}
-                            objective={feedbackData.objective}
-                            complete={feedbackData.complete}
-                        />
+                        <div className="flex justify-center items-center">
+                            <Feedback
+                                cosineSimilarity={feedbackData.cosineSimilarity}
+                                notes={notes}
+                            />
+                        </div>
                     </div>
                 </div>
             )}

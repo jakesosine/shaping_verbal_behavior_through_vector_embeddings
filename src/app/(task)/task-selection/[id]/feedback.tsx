@@ -3,52 +3,24 @@ import BulletChart from "./bullet";
 
 export default function Feedback({
     cosineSimilarity,
-    dotProduct,
-    clear,
-    objective,
-    complete,
+    notes,
 }: {
     cosineSimilarity: number;
-    dotProduct: number;
-    clear: boolean;
-    objective: boolean;
-    complete: string;
+    notes: string;
 }) {
     return (
-        <div className="bg-white h-full rounded-lg p-6 max-w-sm w-full mx-auto">
-            <h2 className="text-xl font-bold mb-4">Feedback</h2>
-            <div className="space-y-4">
-                <div className="flex justify-between items-center">
-                    <span className="text-gray-700">Clear: </span>
-                    <span className="text-green-600 font-semibold">
-                        {clear ? "Yes" : "No"}
-                    </span>
-                </div>
-                <div className="flex justify-between items-center">
-                    <span className="text-gray-700">Objective: </span>
-                    <span className="text-green-600 font-semibold">
-                        {objective ? "Yes" : "No"}
-                    </span>
-                </div>
-                <div className="flex justify-between items-center">
-                    <span className="text-gray-700">Complete: </span>
-                    <span className="text-yellow-500 font-semibold"> {complete}</span>
-                </div>
-                <div className="flex justify-between items-start p-1">
-                    <span className="text-gray-700 w-40">Dot Product:</span>
-                    <div className="flex-1">
-                        <BulletChart value={dotProduct} />
-                    </div>
-                </div>
+        <div className="bg-white rounded-xl shadow-lg p-8 max-w-md w-full mx-auto transform transition-all hover:shadow-xl">
+            <h2 className="text-2xl font-bold mb-6 text-gray-800 border-b pb-2">Your Submission</h2>
+            <div className="mb-8 bg-gray-50 p-4 rounded-lg">
+                <p className="text-gray-700 leading-relaxed">{notes}</p>
+            </div>
 
-                <div className="flex justify-between items-start p-1">
-                    <span className="text-gray-700 w-40">Cosine Similarity:</span>
-                    <div className="flex-1">
-                        <BulletChart value={cosineSimilarity} />
-                    </div>
+            <div className="space-y-4">
+                <h3 className="text-lg font-semibold text-gray-700">Feedback Score</h3>
+                <div className="transform transition hover:scale-[1.02]">
+                    <BulletChart value={cosineSimilarity} />
                 </div>
             </div>
         </div>
     );
 };
-

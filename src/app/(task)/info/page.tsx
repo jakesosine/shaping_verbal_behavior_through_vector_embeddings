@@ -1,5 +1,5 @@
 "use client"
-
+import Feedback from "../task-selection/[id]/feedback";
 import React from "react";
 import BulletChart from "../task-selection/[id]/bullet";
 
@@ -38,6 +38,15 @@ export default function Info() {
                     You will have 10 attempts to achieve your highest possible score. After each attempt, you will be shown the meter to see your progress.
                     Use the meter to guide your improvements - if you see your meter move closer to the end, you're moving in the right direction! If you see your meter move closer to the start, you're moving in the wrong direction.
                 </p>
+                <p className="leading-relaxed">
+                    Here is what the feedback will look like for a submission:
+                </p>
+                <div className="w-full">
+                    <Feedback
+                        cosineSimilarity={0.9}
+                        notes="Here is an example of where your submission will show up in the feedback. You can see by the meter that this submission was very good."
+                    />
+                </div>
 
                 <button
                     className="w-full bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors"

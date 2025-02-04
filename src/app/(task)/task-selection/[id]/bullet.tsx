@@ -14,12 +14,7 @@ export default function BulletChart({ value }: { value: number }) {
                 style={{ width: `${cappedValue * 100}%` }}
             ></div>
             <div className="absolute inset-0 flex justify-center items-center text-blue-900 font-semibold">
-                {value}
             </div>
-            <div
-                className="absolute top-0 bottom-0 left-[80%] w-0.5 bg-green-900"
-                style={{ height: "100%" }}
-            ></div>
         </div>
     );
 };

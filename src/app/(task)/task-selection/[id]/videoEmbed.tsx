@@ -6,6 +6,9 @@ import { processTextInput } from "@/app/(task)/actions/action";
 
 export default function VideoEmbed({ videoId, startTime, endTime, id }: { videoId: string, startTime: number, endTime: number, id: number }) {
     const [notes, setNotes] = useState(""); // State to hold textarea input
+    const [showFeedback, setShowFeedback] = useState(true);
+    const [feedback, setFeedback] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     const videoUrl = `https://www.youtube.com/embed/${videoId}?start=${startTime}&end=${endTime}`;
 
@@ -26,27 +29,46 @@ export default function VideoEmbed({ videoId, startTime, endTime, id }: { videoI
     return (
         <div className="flex flex-col items-center w-full justify-center min-h-screen p-4 bg-gray-100">
             <h2 className="text-lg font-semibold mb-4 text-center">
-                Operationally Define the Behavior
+                Here is the video you will be describing:
             </h2>
-            <p>You are presented with a video, please define the behavior</p>
-            <div className="w-full flex md:max-w-lg lg:max-w-full">
+            <div className="w-full flex md:max-w-lg  lg:max-w-full justify-center">
                 <iframe
-                    className="w-2/3 h-64 m-6 md:h-80 lg:h-96 rounded-lg shadow-lg"
+                    className="justify-center w-1/2 h-64 m-6 md:h-80 lg:h-96 rounded-lg shadow-lg"
                     src={videoUrl}
                     title="Video player"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
                 ></iframe>
-                <div className="w-1/3 h-64 m-6 md:h-80 lg:h-96 rounded-lg shadow-lg">
-                    <Feedback
-                        cosineSimilarity={feedbackData.cosineSimilarity}
-                        dotProduct={feedbackData.dotProduct}
-                        clear={feedbackData.clear}
-                        objective={feedbackData.objective}
-                        complete={feedbackData.complete}
-                    />
-                </div>
             </div>
+
+            {showFeedback && feedbackData && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                    <div className="bg-white p-6 rounded-lg shadow-xl max-w-sm w-full">
+                        <div className="flex justify-between items-center mb-4">
+                            <h3 className="text-lg font-semibold">Feedback</h3>
+                            <button
+                                onClick={() => setShowFeedback(false)}
+                                className="text-gray-500 hover:text-gray-700"
+                            >
+                                ✕
+                            </button>
+                        </div>
+                        <Feedback
+                            cosineSimilarity={feedbackData.cosineSimilarity}
+                            dotProduct={feedbackData.dotProduct}
+                            clear={feedbackData.clear}
+                            objective={feedbackData.objective}
+                            complete={feedbackData.complete}
+                        />
+                    </div>
+                </div>
+            )}
+            {loading && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                    <div className="inline-block h-12 w-12 animate-spin rounded-full border-4 border-solid border-indigo-600 border-r-transparent motion-reduce:animate-[spin_1.5s_linear_infinite]" />
+                </div>
+            )}
+
             <textarea
                 className="mt-4 w-full min-h-[200px] max-h-[400px] max-w-sm md:max-w-lg lg:max-w-xl p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500"
                 placeholder="Enter the operational definition here"
@@ -68,8 +90,12 @@ export default function VideoEmbed({ videoId, startTime, endTime, id }: { videoI
                             alert("Please enter your answer before submitting");
                             return;
                         }
-
-                        await processTextInput(notes, id, jwt);
+                        setLoading(true);
+                        const response = await processTextInput(notes, id, jwt);
+                        if (response?.feedback) {
+                            setFeedback(response.feedback);
+                            setShowFeedback(true);
+                        }
                         alert("Answer submitted successfully!");
                     } catch (error) {
                         console.error("Error submitting answer:", error);

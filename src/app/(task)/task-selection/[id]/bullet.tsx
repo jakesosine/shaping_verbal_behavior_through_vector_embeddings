@@ -18,3 +18,6 @@ export default function BulletChart({ value }: { value: number }) {
         </div>
     );
 };
+// Add a character limit 
+//  Describe 10 times is necessary 
+// jott@operantteachingtech.com

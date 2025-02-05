@@ -53,13 +53,7 @@ export default function Consent() {
                         </p>
                     </section>
 
-                    <section>
-                        <h2 className="text-xl font-semibold text-gray-800 mb-3">Contact</h2>
-                        <p className="text-gray-600">
-                            For questions or concerns about the research, please contact David J. Cox, PhD, MSB, BCBA-D
-                            (dcox@endicott.edu) or Kylee Drugan-Eppich, MS, BCBA, LABA (kdruganeppich@mail.endicott.edu)
-                        </p>
-                    </section>
+
 
                     <section className="bg-gray-50 p-6 rounded-lg mt-8">
                         <h2 className="text-xl font-semibold text-gray-800 mb-4">Electronic Consent</h2>

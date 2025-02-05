@@ -4,14 +4,24 @@ import React from "react";
 import BulletChart from "../task-selection/[id]/bullet";
 
 export default function Info() {
+    const [canProceed, setCanProceed] = React.useState(false);
+
+    React.useEffect(() => {
+        const timer = setTimeout(() => {
+            setCanProceed(true);
+        }, 20000); // 20 seconds
+
+        return () => clearTimeout(timer);
+    }, []);
+
     return (
-        <div className="bg-white h-full rounded-lg p-6 py-12 max-w-3xl w-full mx-auto">
+        <div className="bg-white h-full rounded-lg p-6 max-w-3xl w-full mx-auto">
             <h2 className="text-2xl font-bold mb-6 text-gray-800">Task Information & Feedback Guide</h2>
 
             <div className="space-y-6 text-gray-700 mb-8">
                 <p className="leading-relaxed">
-                    In this experiment, you will be shown a one-minute video clip that you'll need to describe in your own words.
-                    Before watching, you'll receive guidance on specific aspects to observe. Your description will be compared
+                    In this experiment, you will be shown a video clip that you'll need to describe in your own words.
+                    Before watching, you'll receive guidance on what to observe and describe within the video. Your description will be compared
                     to a pre-written description of the video.
                 </p>
 
@@ -49,10 +59,14 @@ export default function Info() {
                 </div>
 
                 <button
-                    className="w-full bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors"
-                    onClick={() => window.location.href = '/task-selection/1'}
+                    className={`w-full font-semibold py-3 px-6 rounded-lg transition-colors ${canProceed
+                        ? 'bg-blue-600 text-white hover:bg-blue-700'
+                        : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                        }`}
+                    onClick={() => canProceed && (window.location.href = '/task-selection/1')}
+                    disabled={!canProceed}
                 >
-                    Begin Task
+                    {canProceed ? 'Begin Task' : 'Please wait 20 seconds...'}
                 </button>
             </div>
         </div>

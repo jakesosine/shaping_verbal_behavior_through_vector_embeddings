@@ -31,7 +31,9 @@ CREATE TABLE "Task" (
     "url" TEXT NOT NULL,
     "startTime" INTEGER NOT NULL,
     "endTime" INTEGER NOT NULL,
-    "description" TEXT NOT NULL,
+    "instructions" TEXT NOT NULL,
+    "comparisonDescription" TEXT NOT NULL DEFAULT '',
+    "embedding" vector,
 
     CONSTRAINT "Task_pkey" PRIMARY KEY ("id")
 );
@@ -41,12 +43,9 @@ CREATE TABLE "TaskResponse" (
     "id" SERIAL NOT NULL,
     "taskId" INTEGER NOT NULL,
     "userId" INTEGER NOT NULL,
+    "attempt" INTEGER NOT NULL,
     "cosineSimilarity" DOUBLE PRECISION NOT NULL,
-    "dotProduct" DOUBLE PRECISION NOT NULL,
-    "clear" BOOLEAN NOT NULL,
-    "objective" BOOLEAN NOT NULL,
-    "complete" BOOLEAN NOT NULL,
-    "description" TEXT NOT NULL,
+    "userDescription" TEXT NOT NULL,
     "embedding" vector,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,

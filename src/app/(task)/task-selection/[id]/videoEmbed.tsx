@@ -5,7 +5,7 @@ import Feedback from "./feedback";
 import { processTextInput } from "@/app/(task)/actions/action";
 
 export default function VideoEmbed({ videoId, startTime, endTime, id }: { videoId: string, startTime: number, endTime: number, id: number }) {
-    const [notes, setNotes] = useState("This video is about a person who is trying to solve a problem and they are using a tool to do so"); // State to hold textarea input
+    const [notes, setNotes] = useState(""); // State to hold textarea input
     const [showFeedback, setShowFeedback] = useState(true);
     const [feedback, setFeedback] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -13,7 +13,10 @@ export default function VideoEmbed({ videoId, startTime, endTime, id }: { videoI
     const videoUrl = `https://www.youtube.com/embed/${videoId}?start=${startTime}&end=${endTime}`;
 
     const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setNotes(e.target.value);
+        const input = e.target.value;
+        if (input.length <= 200) {  // Only update if within character limit
+            setNotes(input);
+        }
     };
 
 
@@ -62,12 +65,18 @@ export default function VideoEmbed({ videoId, startTime, endTime, id }: { videoI
                 </div>
             )}
 
-            <textarea
-                className="mt-4 w-full min-h-[200px] max-h-[400px] max-w-sm md:max-w-lg lg:max-w-xl p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500"
-                placeholder="Enter the operational definition here"
-                value={notes} // Set the value to the notes state
-                onChange={handleTextareaChange} // Update state on change
-            ></textarea>
+            <div className="w-full max-w-sm md:max-w-lg lg:max-w-xl">
+                <div className="text-right text-sm text-gray-500 mb-1">
+                    {`${notes.length}/200 characters`}
+                </div>
+                <textarea
+                    className="w-full min-h-[200px] max-h-[400px] p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500"
+                    placeholder="Enter your description of the video here"
+                    value={notes}
+                    onChange={handleTextareaChange}
+                    maxLength={200}
+                ></textarea>
+            </div>
             <button
                 className="mt-4 px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 type="button"

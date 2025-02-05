@@ -2,6 +2,8 @@
 
 import React, { useState } from "react";
 import { backgroundInfo } from "../actions/action";
+import { useRouter } from 'next/navigation';
+
 type BackgroundFormData = {
     gender: string;
     race: string;
@@ -10,6 +12,7 @@ type BackgroundFormData = {
 };
 
 export default function BackgroundInfoForm() {
+    const router = useRouter();
     const [formData, setFormData] = useState<BackgroundFormData>({
         gender: "",
         race: "",
@@ -115,12 +118,13 @@ export default function BackgroundInfoForm() {
                         type="submit"
                         className="bg-indigo-600 text-white font-semibold py-2 px-4 rounded hover:bg-indigo-700"
 
-                        onClick={async () => {
+                        onClick={async (e) => {
+                            e.preventDefault();
                             const jwt = sessionStorage.getItem('jwt');
                             if (jwt) {
-                                const hasBackground = await backgroundInfo(formData, jwt);
+                                const { hasBackground } = await backgroundInfo(formData, jwt);
                                 if (hasBackground) {
-                                    window.location.href = '/task-selection';
+                                    router.push('/info');
                                 }
                             } else {
                                 console.log("No JWT found");

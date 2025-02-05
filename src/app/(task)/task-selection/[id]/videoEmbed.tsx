@@ -93,7 +93,7 @@ export default function VideoEmbed({ videoId, startTime, endTime, id }: { videoI
                             return;
                         }
                         setLoading(true);
-                        const response = await processTextInput(notes, id, jwt);
+                        const response = await processTextInput(notes, id, 0, jwt);
                         if (response?.feedback) {
                             setFeedback(response.feedback);
                             setShowFeedback(true);

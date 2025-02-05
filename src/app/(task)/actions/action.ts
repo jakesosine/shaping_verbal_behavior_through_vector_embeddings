@@ -28,8 +28,7 @@ export const backgroundInfo = async (formData: BackgroundFormData, jwt: string) 
         where: { id },
         data: { hasBackground: true }
     });
-    console.log(user);
-    return user;
+    return { hasBackground: true };
 }
 
 export const submitConsent = async (jwt: string) => {
@@ -69,23 +68,26 @@ export const processTextInput = async (text: string, id: number, attempt: number
     });
     const embedding = response.data[0]?.embedding;
 
-    const task = await db.task.findUnique({
-        where: {
-            id: id,
-        },
-    });
 
-    const taskResponse = await db.taskResponse.create({
-        data: {
-            userId: userId,
-            taskId: id,
-            attempt: attempt,
-            cosineSimilarity: 0,
-            userDescription: text,
-            embedding: embedding,
-        },
-    });
-    return { userId, embedding, taskResponse };
+    const result = await db.$executeRaw`
+        INSERT INTO "taskResponse" (
+            "userId", 
+            "taskId", 
+            "attempt", 
+            "cosineSimilarity", 
+            "userDescription", 
+            "embedding",
+        ) VALUES (
+            ${userId}, 
+            ${id}, 
+            ${attempt}, 
+            ${0}, 
+            ${text}, 
+            ${embedding}::vector
+        )
+    `;
+
+    return result;
 }
 export const getTask = async (id: number) => {
     const task = await db.task.findUnique({

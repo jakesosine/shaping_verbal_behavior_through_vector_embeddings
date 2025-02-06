@@ -1,9 +1,10 @@
 "use client"
-import Feedback from "../task-selection/[id]/feedback";
+import Feedback from "../task/feedback";
 import React from "react";
-import BulletChart from "../task-selection/[id]/bullet";
-
+import BulletChart from "../task/bullet";
+import { useRouter } from 'next/navigation';
 export default function Info() {
+    const router = useRouter();
     const [canProceed, setCanProceed] = React.useState(false);
 
     React.useEffect(() => {
@@ -63,7 +64,7 @@ export default function Info() {
                         ? 'bg-blue-600 text-white hover:bg-blue-700'
                         : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                         }`}
-                    onClick={() => canProceed && (window.location.href = '/task-selection/1')}
+                    onClick={() => canProceed && router.push('/task')}
                     disabled={!canProceed}
                 >
                     {canProceed ? 'Begin Task' : 'Please wait 20 seconds...'}

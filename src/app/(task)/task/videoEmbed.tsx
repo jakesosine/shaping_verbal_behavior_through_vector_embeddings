@@ -4,24 +4,48 @@ import { useState } from "react";
 import Feedback from "./feedback";
 import { processTextInput } from "@/app/(task)/actions/action";
 
-export default function VideoEmbed({ videoId, startTime, endTime, id }: { videoId: string, startTime: number, endTime: number, id: number }) {
+type taskData = {
+    id: number;
+    url: string;
+    startTime: number;
+    endTime: number;
+    instructions: string;
+    comparisonDescription: string;
+    attempts: number;
+    isActive: boolean;
+}[]
+
+export default function VideoEmbed({ task }: { task: taskData }) {
     const [notes, setNotes] = useState(""); // State to hold textarea input
     const [showFeedback, setShowFeedback] = useState(true);
-    const [feedback, setFeedback] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [trialNumber, setTrialNumber] = useState(1);
+    const [taskDataIndex, setTaskDataIndex] = useState(0);
 
-    const videoUrl = `https://www.youtube.com/embed/${videoId}?start=${startTime}&end=${endTime}`;
+    // Add null check for task array and currentTask
+    if (!task || task.length === 0 || !task[taskDataIndex]) {
+        return <div>No tasks available</div>;
+    }
+
+    const currentTask = task[taskDataIndex];
+    const videoUrl = currentTask.url;
+    const maxTrials = 10;
+
+    // Add function to handle task progression
+    const handleTaskProgression = () => {
+        if (trialNumber >= maxTrials && taskDataIndex < task.length - 1) {
+            setTaskDataIndex(prev => prev + 1);
+            setTrialNumber(1);
+            setNotes("");
+            setShowFeedback(false);
+        }
+    };
 
     const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const input = e.target.value;
         if (input.length <= 200) {  // Only update if within character limit
             setNotes(input);
         }
-    };
-
-
-    const feedbackData = {
-        cosineSimilarity: 0.2,
     };
 
     return (
@@ -39,7 +63,7 @@ export default function VideoEmbed({ videoId, startTime, endTime, id }: { videoI
                 ></iframe>
             </div>
 
-            {showFeedback && feedbackData && (
+            {showFeedback && (
                 <div className="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm flex items-center justify-center z-50 transition-opacity duration-300">
                     <div className="bg-white p-8 rounded-2xl shadow-2xl max-w-xl w-full transform transition-all duration-300 scale-95 hover:scale-100">
                         <div className="flex justify-end items-end mb-4">
@@ -52,7 +76,7 @@ export default function VideoEmbed({ videoId, startTime, endTime, id }: { videoI
                         </div>
                         <div className="flex justify-center items-center">
                             <Feedback
-                                cosineSimilarity={feedbackData.cosineSimilarity}
+                                cosineSimilarity={0.2}
                                 notes={notes}
                             />
                         </div>
@@ -66,8 +90,17 @@ export default function VideoEmbed({ videoId, startTime, endTime, id }: { videoI
             )}
 
             <div className="w-full max-w-sm md:max-w-lg lg:max-w-xl">
-                <div className="text-right text-sm text-gray-500 mb-1">
-                    {`${notes.length}/200 characters`}
+                <div className="flex justify-between items-center mb-4">
+                    <div className="flex items-center space-x-2">
+                        <div className="bg-indigo-600 text-white px-4 py-2 rounded-lg shadow-md">
+                            <span className="text-2xl font-bold">{trialNumber}</span>
+                            <span className="text-indigo-200">/10</span>
+                            <span className="text-indigo-200"> Attempts</span>
+                        </div>
+                    </div>
+                    <div className="text-sm text-gray-500">
+                        {`${notes.length}/200 characters`}
+                    </div>
                 </div>
                 <textarea
                     className="w-full min-h-[200px] max-h-[400px] p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500"
@@ -84,24 +117,28 @@ export default function VideoEmbed({ videoId, startTime, endTime, id }: { videoI
                     try {
                         const jwt = sessionStorage.getItem("jwt");
                         if (!jwt) {
-                            alert("Please log in to submit your answer");
                             return;
                         }
 
                         if (!notes.trim()) {
-                            alert("Please enter your answer before submitting");
                             return;
                         }
                         setLoading(true);
-                        const response = await processTextInput(notes, id, 0, jwt);
-                        if (response?.feedback) {
-                            setFeedback(response.feedback);
+                        const response = await processTextInput(notes, currentTask.id, trialNumber, jwt);
+                        if (response) {
                             setShowFeedback(true);
+                            setTrialNumber(prev => {
+                                const newTrialNumber = prev + 1;
+                                if (newTrialNumber > maxTrials) {
+                                    handleTaskProgression();
+                                }
+                                return newTrialNumber;
+                            });
                         }
-                        alert("Answer submitted successfully!");
                     } catch (error) {
                         console.error("Error submitting answer:", error);
-                        alert("Failed to submit answer. Please try again.");
+                    } finally {
+                        setLoading(false);
                     }
                 }}
             >

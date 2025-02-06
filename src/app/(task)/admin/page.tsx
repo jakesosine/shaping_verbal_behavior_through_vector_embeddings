@@ -23,7 +23,7 @@ export default function AdminPage() {
                         Video URL
                     </label>
                     <input
-                        type="text"
+                        type="url"
                         id="video"
                         value={videoUrl}
                         onChange={(e) => setVideoUrl(e.target.value)}

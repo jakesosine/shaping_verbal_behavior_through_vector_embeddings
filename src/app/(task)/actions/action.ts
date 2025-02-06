@@ -89,9 +89,11 @@ export const processTextInput = async (text: string, id: number, attempt: number
 
     return result;
 }
-export const getTask = async (id: number) => {
-    const task = await db.task.findUnique({
-        where: { id: id },
+export const getTask = async () => {
+    const task = await db.task.findMany({
+        where: {
+            isActive: true,
+        },
     });
     return task;
 }

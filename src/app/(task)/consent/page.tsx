@@ -1,8 +1,10 @@
 'use client'
 import { submitConsent, submitNonConsent } from "../actions/action";
 import { useState } from "react";
+import { useRouter } from 'next/navigation';
 
 export default function Consent() {
+    const router = useRouter();
     const [error, setError] = useState<string | null>(null);
     return (
         <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -70,7 +72,7 @@ export default function Consent() {
                                 if (jwt) {
                                     const consent = await submitConsent(jwt);
                                     if (consent) {
-                                        window.location.href = "/background-info";
+                                        router.push('/background-info');
                                     }
 
                                 } else {
@@ -90,7 +92,7 @@ export default function Consent() {
                                     const consent = await submitNonConsent(jwt);
                                     if (!consent) {
                                         sessionStorage.clear();
-                                        window.location.href = "/";
+                                        router.push('/');
 
                                     }
                                 } else {

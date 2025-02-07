@@ -104,7 +104,20 @@ export const processTextInput = async (
     return { cosineSimilarity };
 };
 
-export const createTask = async (attempts: number, videoUrl: string, startTime: number, endTime: number, instructions: string, comparisonDescription: string, isActive: boolean) => {
+export const createTask = async (attempts: number, videoUrl: string, startTime: number, endTime: number, instructions: string, comparisonDescription: string, isActive: boolean, jwt: string) => {
+    const userId = await protect(jwt);
+    const user = await db.user.findUnique({
+        where: {
+            id: userId,
+        },
+    });
+    if (!user) {
+        throw new Error("User not found");
+    }
+    if (user.admin === false) {
+        throw new Error("User is not an admin");
+    }
+
     const openai = new OpenAI({
         apiKey: process.env.OPENAI_API_KEY,
     });

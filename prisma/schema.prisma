@@ -15,6 +15,7 @@ model User {
     updatedAt      DateTime         @updatedAt
     hasBackground  Boolean          @default(false)
     consent        Boolean          @default(false)
+    admin          Boolean          @default(false)
     BackgroundInfo BackgroundInfo[]
     TaskResponse   TaskResponse[]
 }

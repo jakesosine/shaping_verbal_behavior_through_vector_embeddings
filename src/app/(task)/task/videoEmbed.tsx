@@ -24,7 +24,7 @@ export default function VideoEmbed({ task }: { task: taskData }) {
     const [loading, setLoading] = useState(false);
     const [trialNumber, setTrialNumber] = useState(1);
     const [taskDataIndex, setTaskDataIndex] = useState(0);
-
+    const [cosineSimilarity, setCosineSimilarity] = useState(0);
     useEffect(() => {
         if (!task || task.length === 0 || !task[taskDataIndex]) {
             return;
@@ -90,7 +90,7 @@ export default function VideoEmbed({ task }: { task: taskData }) {
                         </div>
                         <div className="flex justify-center items-center">
                             <Feedback
-                                cosineSimilarity={0.2}
+                                cosineSimilarity={cosineSimilarity}
                                 notes={notes}
                             />
                         </div>
@@ -108,7 +108,7 @@ export default function VideoEmbed({ task }: { task: taskData }) {
                     <div className="flex items-center space-x-2">
                         <div className="bg-indigo-600 text-white px-4 py-2 rounded-lg shadow-md">
                             <span className="text-2xl font-bold">{trialNumber}</span>
-                            <span className="text-indigo-200">/10</span>
+                            <span className="text-indigo-200">{`/${maxTrials}`}</span>
                             <span className="text-indigo-200"> Attempts</span>
                         </div>
                     </div>
@@ -137,6 +137,8 @@ export default function VideoEmbed({ task }: { task: taskData }) {
                         console.log(currentTask.id);
                         const response = await processTextInput(notes, currentTask.id, trialNumber, jwt);
                         if (response) {
+                            let cosineSimilarity = response.cosineSimilarity;
+                            setCosineSimilarity(cosineSimilarity);
                             setShowFeedback(true);
                             // Simply update the trial number here:
                             setTrialNumber(prev => prev + 1);

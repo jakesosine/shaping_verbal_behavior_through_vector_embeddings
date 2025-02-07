@@ -41,6 +41,7 @@ export default function VideoEmbed({ task }: { task: taskData }) {
     const currentTask = task[taskDataIndex];
     const videoUrl = currentTask.url;
     const maxTrials = currentTask.attempts;
+    const instructions = currentTask.instructions;
 
     useEffect(() => {
         if (trialNumber > maxTrials) {
@@ -70,6 +71,7 @@ export default function VideoEmbed({ task }: { task: taskData }) {
             <h2 className="text-lg font-semibold mb-4 text-center">
                 Here is the video you will be describing:
             </h2>
+            <p className="text-md text-gray-500 mb-4 text-center">{instructions}</p>
             <div className="w-full flex md:max-w-lg  lg:max-w-full justify-center">
                 <iframe
                     className="justify-center w-1/2 h-64 m-6 md:h-80 lg:h-96 rounded-lg shadow-lg"

@@ -1,8 +1,9 @@
 'use client'
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Feedback from "./feedback";
 import { processTextInput } from "@/app/(task)/actions/action";
+import { useRouter } from "next/navigation";
 
 type taskData = {
     id: number;
@@ -16,30 +17,43 @@ type taskData = {
 }[]
 
 export default function VideoEmbed({ task }: { task: taskData }) {
+
+    const router = useRouter();
     const [notes, setNotes] = useState(""); // State to hold textarea input
-    const [showFeedback, setShowFeedback] = useState(true);
+    const [showFeedback, setShowFeedback] = useState(false);
     const [loading, setLoading] = useState(false);
     const [trialNumber, setTrialNumber] = useState(1);
     const [taskDataIndex, setTaskDataIndex] = useState(0);
 
-    // Add null check for task array and currentTask
+    useEffect(() => {
+        if (!task || task.length === 0 || !task[taskDataIndex]) {
+            return;
+        }
+    }, [task, taskDataIndex]);
+
     if (!task || task.length === 0 || !task[taskDataIndex]) {
         return <div>No tasks available</div>;
     }
 
     const currentTask = task[taskDataIndex];
     const videoUrl = currentTask.url;
-    const maxTrials = 10;
+    const maxTrials = 2;
 
-    // Add function to handle task progression
-    const handleTaskProgression = () => {
-        if (trialNumber >= maxTrials && taskDataIndex < task.length - 1) {
-            setTaskDataIndex(prev => prev + 1);
-            setTrialNumber(1);
-            setNotes("");
-            setShowFeedback(false);
+    useEffect(() => {
+        if (trialNumber > maxTrials) {
+            // Check if there are more tasks available:
+            if (taskDataIndex < task.length - 1) {
+                setTaskDataIndex(taskDataIndex + 1);
+                setTrialNumber(1);
+                setNotes("");
+                setShowFeedback(false);
+            } else {
+                // Navigation is now triggered as a side effect, not during render:
+                router.push("/thank-you");
+            }
         }
-    };
+    }, [trialNumber, maxTrials, taskDataIndex, task, router]);
+
 
     const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const input = e.target.value;
@@ -116,24 +130,16 @@ export default function VideoEmbed({ task }: { task: taskData }) {
                 onClick={async () => {
                     try {
                         const jwt = sessionStorage.getItem("jwt");
-                        if (!jwt) {
-                            return;
-                        }
-
-                        if (!notes.trim()) {
+                        if (!jwt || !notes.trim()) {
                             return;
                         }
                         setLoading(true);
+                        console.log(currentTask.id);
                         const response = await processTextInput(notes, currentTask.id, trialNumber, jwt);
                         if (response) {
                             setShowFeedback(true);
-                            setTrialNumber(prev => {
-                                const newTrialNumber = prev + 1;
-                                if (newTrialNumber > maxTrials) {
-                                    handleTaskProgression();
-                                }
-                                return newTrialNumber;
-                            });
+                            // Simply update the trial number here:
+                            setTrialNumber(prev => prev + 1);
                         }
                     } catch (error) {
                         console.error("Error submitting answer:", error);
@@ -144,6 +150,7 @@ export default function VideoEmbed({ task }: { task: taskData }) {
             >
                 Submit Answer
             </button>
+
         </div>
     );
 };

@@ -13,8 +13,6 @@ type TaskSelectionProps = {
 export default function TaskSelection({ data }: { data: TaskSelectionProps }) {
     return (
         <>
-
-
             <div className="text-center mb-8 max-w-2xl mx-auto">
                 <h2 className="text-xl font-semibold text-gray-800 mb-3">
                     Task Instructions

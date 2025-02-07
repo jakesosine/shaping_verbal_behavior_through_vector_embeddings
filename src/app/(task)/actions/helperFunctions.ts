@@ -1,23 +1,27 @@
-export const cosineSim = (A: (number)[], B: (number)[]) => {
-    let dotproduct = 0;
-    let mA = 0;
-    let mB = 0;
-
-    for (let i = 0; i < A.length; i++) {
-        if (A[i] !== undefined && B[i] !== undefined) {
-            dotproduct += A[i] * B[i];
-            mA += A[i] * A[i];
-            mB += B[i] * B[i];
-        }
+export function cosineSimilarity(vectorA: number[], vectorB: number[]): number {
+    if (vectorA.length !== vectorB.length) {
+        throw new Error("Vectors must be of the same length.");
     }
 
-    mA = Math.sqrt(mA);
-    mB = Math.sqrt(mB);
+    // Calculate the dot product and the norms of each vector.
+    let dotProduct = 0;
+    let normA = 0;
+    let normB = 0;
 
-    // Prevent division by zero
-    if (mA === 0 || mB === 0) {
-        return 0;
+    for (let i = 0; i < vectorA.length; i++) {
+        dotProduct += vectorA[i] * vectorB[i];
+        normA += vectorA[i] ** 2;
+        normB += vectorB[i] ** 2;
     }
 
-    return dotproduct / (mA * mB);
+    normA = Math.sqrt(normA);
+    normB = Math.sqrt(normB);
+
+    // Ensure neither vector is a zero vector.
+    if (normA === 0 || normB === 0) {
+        throw new Error("Cannot compute cosine similarity for a zero vector.");
+    }
+
+    return dotProduct / (normA * normB);
 }
+

@@ -16,10 +16,8 @@ export const cosineSim = (A: (number)[], B: (number)[]) => {
 
     // Prevent division by zero
     if (mA === 0 || mB === 0) {
-        return { similarity: 0, dotproduct: 0 };
+        return 0;
     }
 
-    const similarity = dotproduct / (mA * mB);
-
-    return { similarity, dotproduct };
+    return dotproduct / (mA * mB);
 }

@@ -9,6 +9,8 @@ export default function AdminPage() {
     const [endTime, setEndTime] = useState('')
     const [comparisonDescription, setComparisonDescription] = useState('')
     const [isActive, setIsActive] = useState(true)
+    const [attempts, setAttempts] = useState(1)
+
 
     return (
         <div className="max-w-2xl mx-auto p-6">
@@ -106,34 +108,53 @@ export default function AdminPage() {
                         placeholder="Enter comparison description"
                     />
                 </div>
-
-                <div className="flex items-center">
+                <div>
                     <label
-                        htmlFor="isActive"
-                        className="block text-sm font-medium text-gray-700 mr-3"
+                        htmlFor="attempts"
+                        className="block text-sm font-medium text-gray-700 mb-2"
                     >
-                        Task Status
+                        Number of Attempts
                     </label>
-                    <div className="relative inline-flex items-center cursor-pointer">
-                        <input
-                            type="checkbox"
-                            id="isActive"
-                            className="sr-only peer"
-                            checked={isActive}
-                            onChange={(e) => setIsActive(e.target.checked)}
-                        />
-                        <div className="w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                    <input
+                        type="number"
+                        id="attempts"
+                        value={attempts}
+                        onChange={(e) => setAttempts(parseInt(e.target.value))}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                        placeholder="Enter number of attempts"
+                        min={1}
+                        required
+                    />
+                </div>
+                <div className="flex items-center">
+                    <label htmlFor="isActive" className="flex items-center cursor-pointer">
+                        <div className="relative">
+                            <input
+                                type="checkbox"
+                                id="isActive"
+                                className="sr-only peer"
+                                checked={isActive}
+                                onChange={() => setIsActive(!isActive)}
+                            />
+                            <div className="w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 
+                                      peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full 
+                                      peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 
+                                      after:start-[2px] after:bg-white after:border-gray-300 after:border 
+                                      after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 
+                                      peer-checked:bg-blue-600"></div>
+                        </div>
                         <span className="ml-3 text-sm font-medium text-gray-700">
                             {isActive ? 'Active' : 'Inactive'}
                         </span>
-                    </div>
+                    </label>
                 </div>
+
 
                 <button
                     type="submit"
                     className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
                     onClick={async () => {
-                        await createTask(10, videoUrl,
+                        await createTask(attempts, videoUrl,
                             parseInt(startTime),
                             parseInt(endTime),
                             instructions,

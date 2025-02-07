@@ -32,12 +32,15 @@ export default function VideoEmbed({ task }: { task: taskData }) {
     }, [task, taskDataIndex]);
 
     if (!task || task.length === 0 || !task[taskDataIndex]) {
-        return <div>No tasks available</div>;
+        return <div className="text-center p-8 text-gray-700 bg-gray-100 rounded-lg shadow-md">
+            <p className="text-lg font-medium">No tasks available.</p>
+            <p className="mt-2 text-sm text-gray-500">Please use the /admin page to add a task.</p>
+        </div>;
     }
 
     const currentTask = task[taskDataIndex];
     const videoUrl = currentTask.url;
-    const maxTrials = 2;
+    const maxTrials = currentTask.attempts;
 
     useEffect(() => {
         if (trialNumber > maxTrials) {

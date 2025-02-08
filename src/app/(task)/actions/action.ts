@@ -3,8 +3,6 @@ import { db } from "@/server/db";
 import { protect } from "@/app/utils/auth";
 import { OpenAI } from "openai";
 
-
-
 type BackgroundFormData = {
     gender: string;
     race: string;
@@ -71,10 +69,13 @@ export const processTextInput = async (
     const openai = new OpenAI({
         apiKey: process.env.OPENAI_API_KEY,
     });
+
+    // Remove the type assertion since OpenAI's client handles types internally
     const embeddingResponse = await openai.embeddings.create({
         model: "text-embedding-ada-002",
         input: text,
     });
+
     const embedding = embeddingResponse.data[0]?.embedding;
     if (!embedding) {
         throw new Error("Failed to generate embedding");
@@ -93,7 +94,7 @@ export const processTextInput = async (
     const cosineSimilarity = taskResult.cosine_similarity;
 
     // Insert a new TaskResponse record, ensuring that all required columns receive a value.
-    const result = await db.$executeRaw`
+    await db.$executeRaw`
       INSERT INTO "TaskResponse" (
         "userId", "taskId", "attempt", "cosineSimilarity", "userDescription", "embedding"
       ) VALUES (
@@ -151,8 +152,6 @@ export const createTask = async (attempts: number, videoUrl: string, startTime: 
             ${isActive}
         )
     `;
-
-
 
     return result;
 }

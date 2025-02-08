@@ -1,5 +1,11 @@
 "use client";
-import React, { useState, FormEvent } from "react";
+import React, { useState, type FormEvent } from "react";
+
+interface AuthResponse {
+    token?: string;
+    user?: unknown;
+    message?: string;
+}
 
 export default function SignIn() {
     const [email, setEmail] = useState("");
@@ -25,7 +31,8 @@ export default function SignIn() {
                 ),
             });
 
-            const data = await response.json();
+            // Cast the JSON response to the AuthResponse type
+            const data = (await response.json()) as AuthResponse;
 
             if (response.status === 200 && data.token && data.user) {
                 sessionStorage.setItem("jwt", data.token);

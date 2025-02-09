@@ -19,12 +19,14 @@ type taskData = {
 export default function VideoEmbed({ task }: { task: taskData }) {
 
     const router = useRouter();
+    const [previousNotes, setPreviousNotes] = useState(""); // State to hold previous notes
     const [notes, setNotes] = useState(""); // State to hold textarea input
     const [showFeedback, setShowFeedback] = useState(false);
     const [loading, setLoading] = useState(false);
     const [trialNumber, setTrialNumber] = useState(1);
     const [taskDataIndex, setTaskDataIndex] = useState(0);
     const [cosineSimilarity, setCosineSimilarity] = useState(0);
+    const [isSameNotes, setIsSameNotes] = useState(false);
     useEffect(() => {
         if (!task || task.length === 0 || !task[taskDataIndex]) {
             return;
@@ -129,11 +131,22 @@ export default function VideoEmbed({ task }: { task: taskData }) {
                     maxLength={200}
                 ></textarea>
             </div>
+            {isSameNotes && (
+                <div className="text-red-500 text-center">
+                    Please modify your submission before resubmitting.
+                </div>
+            )}
             <button
                 className="mt-4 px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 type="button"
                 onClick={async () => {
                     try {
+                        if (notes === previousNotes) {
+                            console.log("notes are the same as previous notes");
+                            setIsSameNotes(true);
+                            return;
+                        }
+                        setIsSameNotes(false);
                         const jwt = sessionStorage.getItem("jwt");
                         if (!jwt || !notes.trim()) {
                             return;
@@ -147,6 +160,7 @@ export default function VideoEmbed({ task }: { task: taskData }) {
                             setShowFeedback(true);
                             // Simply update the trial number here:
                             setTrialNumber(prev => prev + 1);
+                            setPreviousNotes(notes);
                         }
                     } catch (error) {
                         console.error("Error submitting answer:", error);

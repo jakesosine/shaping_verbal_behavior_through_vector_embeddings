@@ -2,7 +2,7 @@ export default function BulletChart({ normalizedValue }: { normalizedValue: numb
     console.log("normalizedValue", normalizedValue);
 
     const getColor = (val: number) => {
-        if (val <= 0.4) return "bg-red-600";
+        if (val <= 0.55) return "bg-red-600";
         if (val <= 0.8) return "bg-yellow-600";
         return "bg-green-600";
     };

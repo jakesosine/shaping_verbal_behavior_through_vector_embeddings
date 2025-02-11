@@ -30,20 +30,20 @@ export default function Info() {
                     You will receive feedback through a <strong>meter</strong> that will be shown below. A <strong>high score</strong> will return a color of <span className="text-green-600 font-semibold">green</span>, for example, the meter below:
                 </p>
                 <div className="w-full">
-                    <BulletChart value={0.9} />
+                    <BulletChart normalizedValue={0.9} />
                 </div>
                 <p className="leading-relaxed">
                     A <strong>poor score</strong> will return a color of <span className="text-red-600 font-semibold">red</span>, for example, the meter below:
                 </p>
                 <div className="w-full">
-                    <BulletChart value={.1} />
+                    <BulletChart normalizedValue={.1} />
                 </div>
 
                 <p className="leading-relaxed">
                     A <strong>medium score</strong> will return a color of <span className="text-yellow-600 font-semibold">yellow</span>, for example, the meter below:
                 </p>
                 <div className="w-full">
-                    <BulletChart value={.5} />
+                    <BulletChart normalizedValue={.5} />
                 </div>
                 <p className="leading-relaxed">
                     You will have 10 attempts to achieve your highest possible score. After each attempt, you will be shown the meter to see your progress.

@@ -27,6 +27,7 @@ export default function VideoEmbed({ task }: { task: taskData }) {
     const [taskDataIndex, setTaskDataIndex] = useState(0);
     const [cosineSimilarity, setCosineSimilarity] = useState(0);
     const [isSameNotes, setIsSameNotes] = useState(false);
+    const [changedValue, setChangedValue] = useState(0);
     useEffect(() => {
         if (!task || task.length === 0 || !task[taskDataIndex]) {
             return;
@@ -99,6 +100,7 @@ export default function VideoEmbed({ task }: { task: taskData }) {
                             <Feedback
                                 cosineSimilarity={cosineSimilarity}
                                 notes={notes}
+                                changedValue={changedValue}
                             />
                         </div>
                     </div>
@@ -157,8 +159,11 @@ export default function VideoEmbed({ task }: { task: taskData }) {
                         if (response) {
                             let transformedCosineSimilarity = response.transformedCosineSimilarity;
                             setCosineSimilarity(transformedCosineSimilarity);
+
+                            const difference = transformedCosineSimilarity - cosineSimilarity;
+                            setChangedValue(Number((difference * 100).toFixed(2)));
+
                             setShowFeedback(true);
-                            // Simply update the trial number here:
                             setTrialNumber(prev => prev + 1);
                             setPreviousNotes(notes);
                         }

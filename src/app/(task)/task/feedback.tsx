@@ -1,13 +1,23 @@
 import React from "react";
 import BulletChart from "./bullet";
 
-export default function Feedback({
-    cosineSimilarity,
-    notes,
-}: {
+interface FeedbackProps {
     cosineSimilarity: number;
     notes: string;
-}) {
+    changedValue: number;
+}
+
+const Feedback: React.FC<FeedbackProps> = ({ cosineSimilarity, notes, changedValue }) => {
+    // Determine the text color and message based on changedValue.
+    let message = "";
+    if (changedValue < 0) {
+        message = `${Math.abs(changedValue)}%`;
+    } else if (changedValue > 0) {
+        message = `+${Math.abs(changedValue)}%`;
+    } else {
+        message = `0%`;
+    }
+
     return (
         <div className="bg-white rounded-xl shadow-lg p-8 max-w-md w-full mx-auto transform transition-all hover:shadow-xl">
             <h2 className="text-2xl font-bold mb-6 text-gray-800 border-b pb-2">Your Submission</h2>
@@ -17,6 +27,16 @@ export default function Feedback({
 
             <div className="space-y-4">
                 <h3 className="text-lg font-semibold text-gray-700">Feedback Score</h3>
+                <p className="leading-relaxed">
+                    <span className="text-black">Your score has changed by </span>
+                    <span className={
+                        changedValue < 0 ? "text-red-500" :
+                            changedValue > 0 ? "text-green-500" :
+                                "text-gray-700"
+                    }>
+                        {message}
+                    </span>
+                </p>
                 <div className="transform transition hover:scale-[1.02]">
                     <BulletChart normalizedValue={cosineSimilarity} />
                 </div>
@@ -24,3 +44,5 @@ export default function Feedback({
         </div>
     );
 };
+
+export default Feedback;

@@ -43,7 +43,7 @@ export default function Info() {
                     A <strong>medium score</strong> will return a color of <span className="text-yellow-600 font-semibold">yellow</span>, for example, the meter below:
                 </p>
                 <div className="w-full">
-                    <BulletChart normalizedValue={.5} />
+                    <BulletChart normalizedValue={.65} />
                 </div>
                 <p className="leading-relaxed">
                     You will have 10 attempts to achieve your highest possible score. After each attempt, you will be shown the meter to see your progress.

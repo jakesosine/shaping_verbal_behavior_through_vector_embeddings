@@ -18,7 +18,7 @@ export default function Feedback({
             <div className="space-y-4">
                 <h3 className="text-lg font-semibold text-gray-700">Feedback Score</h3>
                 <div className="transform transition hover:scale-[1.02]">
-                    <BulletChart value={cosineSimilarity} />
+                    <BulletChart normalizedValue={cosineSimilarity} />
                 </div>
             </div>
         </div>

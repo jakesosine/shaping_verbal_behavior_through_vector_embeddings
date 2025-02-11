@@ -155,8 +155,8 @@ export default function VideoEmbed({ task }: { task: taskData }) {
                         console.log(currentTask.id);
                         const response = await processTextInput(notes, currentTask.id, trialNumber, jwt);
                         if (response) {
-                            let cosineSimilarity = response.cosineSimilarity;
-                            setCosineSimilarity(cosineSimilarity);
+                            let transformedCosineSimilarity = response.transformedCosineSimilarity;
+                            setCosineSimilarity(transformedCosineSimilarity);
                             setShowFeedback(true);
                             // Simply update the trial number here:
                             setTrialNumber(prev => prev + 1);

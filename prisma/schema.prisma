@@ -44,15 +44,30 @@ model Task {
 }
 
 model TaskResponse {
-    id               Int                    @id @default(autoincrement())
-    taskId           Int
-    task             Task                   @relation(fields: [taskId], references: [id])
-    userId           Int
-    user             User                   @relation(fields: [userId], references: [id])
-    attempt          Int
-    cosineSimilarity Float
-    userDescription  String
-    embedding        Unsupported("vector")?
-    createdAt        DateTime               @default(now())
-    updatedAt        DateTime?              @updatedAt
+    id                          Int                           @id @default(autoincrement())
+    taskId                      Int
+    task                        Task                          @relation(fields: [taskId], references: [id])
+    userId                      Int
+    user                        User                          @relation(fields: [userId], references: [id])
+    attempt                     Int
+    cosineSimilarity            Float
+    userDescription             String
+    embedding                   Unsupported("vector")?
+    createdAt                   DateTime                      @default(now())
+    updatedAt                   DateTime?                     @updatedAt
+    transformedCosineSimilarity TransformedCosineSimilarity[]
+}
+
+model TransformedCosineSimilarity {
+    id                       Int          @id @default(autoincrement())
+    taskResponseId           Int
+    taskResponse             TaskResponse @relation(fields: [taskResponseId], references: [id])
+    cosineSimilarity         Float
+    oneMinusCosineSimilarity Float
+    loggedValue              Float
+    absoluteValue            Float
+    dividedValue             Float
+    normalizedValue          Float
+    createdAt                DateTime     @default(now())
+    updatedAt                DateTime?    @updatedAt
 }

@@ -55,6 +55,7 @@ export default function Info() {
                 <div className="w-full">
                     <Feedback
                         cosineSimilarity={0.9}
+                        changedValue={10}
                         notes="Here is an example of where your submission will show up in the feedback. You can see by the meter that this submission was very good."
                     />
                 </div>

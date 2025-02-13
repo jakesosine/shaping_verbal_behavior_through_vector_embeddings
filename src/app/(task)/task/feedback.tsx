@@ -28,11 +28,11 @@ const Feedback: React.FC<FeedbackProps> = ({ cosineSimilarity, notes, changedVal
             <div className="space-y-4">
                 <h3 className="text-lg font-semibold text-gray-700">Feedback Score</h3>
                 <p className="leading-relaxed">
-                    <span className="text-black">Your score has changed by </span>
+                    <span className="text-black text-xl">Your score has {changedValue < 0 ? "decreased" : changedValue > 0 ? "increased" : "changed"} by </span>
                     <span className={
-                        changedValue < 0 ? "text-red-500" :
-                            changedValue > 0 ? "text-green-500" :
-                                "text-gray-700"
+                        changedValue < 0 ? "text-red-500 text-xl" :
+                            changedValue > 0 ? "text-green-500 text-xl" :
+                                "text-gray-700 text-xl"
                     }>
                         {message}
                     </span>

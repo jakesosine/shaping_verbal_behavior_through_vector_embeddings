@@ -7,7 +7,7 @@ export default function ThankYou() {
 
     const handleLogout = () => {
         sessionStorage.removeItem('jwt');
-        router.push('/');
+        router.push('https://app.prolific.com/submissions/complete?cc=C106SSEM');
     };
 
     return (

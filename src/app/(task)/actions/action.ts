@@ -10,7 +10,7 @@ type BackgroundFormData = {
     highested: string;
 };
 
-export const backgroundInfo = async (formData: BackgroundFormData, jwt: string) => {
+export const backgroundInfo = async (formData: BackgroundFormData, jwt: string, prolificId: string) => {
     const { gender, race, agerange, highested } = formData;
     const id = await protect(jwt);
     await db.backgroundInfo.create({
@@ -25,7 +25,7 @@ export const backgroundInfo = async (formData: BackgroundFormData, jwt: string) 
 
     const user = await db.user.update({
         where: { id },
-        data: { hasBackground: true }
+        data: { hasBackground: true, prolificId }
     });
     return { hasBackground: true };
 }

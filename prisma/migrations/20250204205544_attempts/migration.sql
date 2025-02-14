@@ -1,2 +1,0 @@
--- AlterTable
-ALTER TABLE "Task" ADD COLUMN     "attempts" INTEGER NOT NULL DEFAULT 10;

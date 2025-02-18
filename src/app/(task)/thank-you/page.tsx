@@ -17,7 +17,7 @@ export default function ThankYou() {
                     Thank You for Participating!
                 </h1>
                 <p className="text-gray-600 text-lg mb-8">
-                    We appreciate your time and contribution to our study.
+                    We appreciate your time and contribution to our study. You will be redirected to Prolific once you click the button below.
                 </p>
                 <button
                     onClick={handleLogout}

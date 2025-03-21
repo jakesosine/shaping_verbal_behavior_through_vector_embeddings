@@ -121,7 +121,7 @@ export default function BackgroundInfoForm() {
                         htmlFor="prolificId"
                         className="block text-sm font-medium text-gray-700 mb-2"
                     >
-                        Prolific ID
+                        Prolific ID (Type Any Value if You Don't Have One)
                     </label>
                     <input
                         type="text"
